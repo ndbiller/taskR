@@ -15,3 +15,6 @@
 
 # Ignore env files
 .env*
+
+# Ignore IDE files from rubymine
+.idea/*
