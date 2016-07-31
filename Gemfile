@@ -5,6 +5,9 @@ ruby '2.2.5'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 
+# Bootstrap
+gem 'bootstrap-sass', '3.3.6'
+
 # handle environment variables for sensitive data like passwords
 gem 'dotenv-rails', :groups => [:development, :test], require: false
 
