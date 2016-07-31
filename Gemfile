@@ -8,6 +8,9 @@ gem 'rails', '4.2.6'
 # Bootstrap
 gem 'bootstrap-sass', '3.3.6'
 
+# Use for password_digest
+gem 'bcrypt', '3.1.11'
+
 # handle environment variables for sensitive data like passwords
 gem 'dotenv-rails', :groups => [:development, :test], require: false
 
