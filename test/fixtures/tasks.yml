@@ -1,0 +1,20 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: 
+  active: false
+  duration: 2016-11-02 21:31:10
+  created_at: 2016-11-02 21:31:10
+  started_at: 2016-11-02 21:31:10
+  stopped_at: 2016-11-02 21:31:10
+
+two:
+  name: MyString
+  user: 
+  active: false
+  duration: 2016-11-02 21:31:10
+  created_at: 2016-11-02 21:31:10
+  started_at: 2016-11-02 21:31:10
+  stopped_at: 2016-11-02 21:31:10
