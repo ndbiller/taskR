@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160731162019) do
+ActiveRecord::Schema.define(version: 20161102203109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.boolean  "active"
+    t.time     "duration"
+    t.datetime "created_at", null: false
+    t.datetime "started_at"
+    t.datetime "stopped_at"
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -26,4 +39,5 @@ ActiveRecord::Schema.define(version: 20160731162019) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
+  add_foreign_key "tasks", "users"
 end
