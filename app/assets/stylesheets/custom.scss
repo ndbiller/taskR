@@ -82,7 +82,7 @@ footer {
   width: 100%;
   border-top: 1px solid #EFEFEF;
   color: #EFEFEF;
-  z-index: 11;
+  z-index: 15;
 }
 
 footer a, footer a:visited {
@@ -231,4 +231,22 @@ a.btn:visited {
 
 footer ul.navbar-right {
   margin-right: 0;
+}
+
+/* clock */
+
+.center-content {
+  margin: 0 auto;
+  display: block;
+  max-width: 600px;
+}
+
+@media all and (max-width: 480px) {
+  .center-content > #fancyClock > div.clock {
+    max-width: 600px;
+    max-height: 200px;
+    margin: 0 auto;
+    display: block;
+    float: none;
+  }
 }
