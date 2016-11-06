@@ -101,7 +101,7 @@ footer p {
 
 footer ul {
   margin-top: 7px;
-  margin-right: 15px;
+  //margin-right: 15px;
   float: right;
   list-style: none;
 }
@@ -227,4 +227,8 @@ a.btn:visited {
 
 .jumbotron {
   background-color: inherit;
+}
+
+footer ul.navbar-right {
+  margin-right: 0;
 }
