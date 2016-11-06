@@ -82,10 +82,7 @@ footer {
   width: 100%;
   border-top: 1px solid #EFEFEF;
   color: #EFEFEF;
-}
-
-footer div.container {
-  padding: 0;
+  z-index: 11;
 }
 
 footer a, footer a:visited {
@@ -104,6 +101,7 @@ footer p {
 
 footer ul {
   margin-top: 7px;
+  margin-right: 15px;
   float: right;
   list-style: none;
 }
@@ -213,4 +211,16 @@ input {
 
 .table-hover > tbody > tr:hover {
   background-color: lighten(#252525, 5%);
+}
+
+/* header */
+
+.container-fluid > .navbar-header {
+  margin-left: 0;
+}
+
+/* bootstrap overrides */
+
+a.btn:visited {
+  color: #fff;
 }
