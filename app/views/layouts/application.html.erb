@@ -2,7 +2,12 @@
 <html>
 <head>
   <title>TaskR | <%= yield(:title) %></title>
+  <!-- viewport zoomed in for mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- expire cache and force page to reload on back button and other navigation to reinitialize the clock script that animates the circles -->
+  <meta http-equiv="expires" content="-1">
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag(yield :optional_javascript) %>

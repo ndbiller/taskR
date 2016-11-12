@@ -1,11 +1,17 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user, only: [:show, :edit, :update]
+  before_action :correct_user,   only: [:show, :edit, :update]
 
   # Routes
+  # Shows all the users
+  def index
+    @users = User.all
+  end
 
+  # Shows the user profile
   def show
-    @user = User.find(params[:id])
+    @users = User.where(id: params[:id])
+    @tasks = Task.where(user_id: session[:user_id])
   end
 
   def new
@@ -38,27 +44,15 @@ class UsersController < ApplicationController
   end
 
   # Methods
-
   private
-
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-                                 :password_confirmation)
-  end
-
-  # Before filters
-
-  # Confirms a logged-in user.
-  def logged_in_user
-    unless logged_in?
-      flash[:danger] = "Please log in."
-      redirect_to login_url
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
-  end
 
-  # Confirms the correct user.
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to(root_url) unless current_user?(@user)
-  end
+    # Confirms only the correct user can access his routes. Redirects to current users profile if route does not match users id.
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(profile_url(id: session[:user_id])) unless current_user?(@user)
+    end
 end
