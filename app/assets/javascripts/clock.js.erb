@@ -1,0 +1,13 @@
+/**
+ * Created by nd on 12.11.16.
+ * Javascript interval method to update and display the time in the header
+ */
+
+// Setting up a interval, executed every 1000 milliseconds:
+var myTimer = setInterval(myClock, 500);
+// Update the Time via the interval myTimer every 1000 milliseconds and
+// display it as the content of the html element with the id 'clock'
+function myClock() {
+  document.getElementById("clock").innerHTML =
+      new Date().toLocaleTimeString();
+}

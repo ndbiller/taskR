@@ -1,10 +1,19 @@
 class TasksController < ApplicationController
+  before_action :logged_in_user
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
+
+  # shows the tasks of the current user
   # GET /tasks
   # GET /tasks.json
   def index
+    @tasks = Task.where(user_id: session[:user_id])
+  end
+
+  # shows all the tasks of all users
+  def all_tasks
     @tasks = Task.all
+    render :index
   end
 
   # GET /tasks/1

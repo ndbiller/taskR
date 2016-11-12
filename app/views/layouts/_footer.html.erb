@@ -1,12 +1,34 @@
 <footer class="footer">
-  <div class="container-fluid">
-    <p>
-      TaskR by <a href="http://www.github.com/ndbiller/">ndbiller</a>
-    </p>
-    <nav>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <p>TaskR by <a href="http://www.github.com/ndbiller/">ndbiller</a></p>
       <ul class="navbar-right">
-        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Home", logged_in? ? current_user : root_path %></li>
+        <% if logged_in? %>
+          <li><%= link_to "Tasks", tasks_path %></li>
+          <li>
+            <div class="btn-group-sm dropup">
+              <a class="btn-footer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                More <b class="caret"></b>
+                <span class="sr-only">Toggle More</span>
+              </a>
+              <!-- Dropdown menu links -->
+              <ul class="dropdown-menu">
+                <li><h6 class="dropdown-header">Settings</h6></li>
+                <li><%= link_to "User Configuration", edit_user_path(current_user), class: "dropdown-item" %></li>
+                <li><h6 class="dropdown-header">Development</h6></li>
+                <li><%= link_to "Show all users", users_path, class: "dropdown-item" %></li>
+                <li><%= link_to "Show all tasks", all_tasks_path, class: "dropdown-item" %></li>
+                <li><h6 class="dropdown-header">Quit TaskR</h6></li>
+                <li><%= link_to "Log out", logout_path, method: "delete", class: "dropdown-item" %></li>
+              </ul>
+            </div>
+          </li>
+        <% else %>
+          <li><%= link_to "Sign up", new_user_path %></li>
+          <li><%= link_to "Log in", login_path %></li>
+        <% end %>
       </ul>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </footer>
