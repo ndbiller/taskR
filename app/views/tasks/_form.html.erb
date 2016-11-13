@@ -1,8 +1,8 @@
-<%= form_for(@task) do |f| %>
+<%= form_for @task, html: {class: "form-horizontal center-content"} do |f| %>
+
   <% if @task.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
       <ul>
       <% @task.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -11,35 +11,57 @@
     </div>
   <% end %>
 
+  <div class="default-values hidden">
+    <p><strong>hidden fields:</strong></p>
+    <div class="field">
+      <%= f.label :user_id, 'user id' %><br>
+      <%= f.text_field :user_id, value: @user.id, class: 'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :active, 'status' %><br>
+      <%= f.check_box :active, class: 'form-control', checked: true %>
+    </div>
+    <div class="field">
+      <%= f.label :duration, 'duration' %><br>
+      <%= f.number_field :duration, class: 'form-control', value: 0 %>
+    </div>
+    <!--<div class="field date-time-row">
+      <%= f.label :created_at, 'created at' %><br>
+      <%= f.datetime_select :created_at, class: 'form-control', value: Time.zone.now, type: 'datetime-local' %>
+    </div>
+    <div class="field date-time-row">
+      <%= f.label :started_at, 'started at' %><br>
+      <%= f.datetime_select :started_at, class: 'form-control', value: Time.zone.now, type: 'datetime-local' %>
+    </div>
+    <div class="field date-time-row">
+      <%= f.label :stopped_at, 'stopped at' %><br>
+      <%= f.datetime_select :stopped_at, class: 'form-control', value: Time.zone.now, type: 'datetime-local' %>
+    </div>-->
+  </div>
+
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.label :name, 'name' %><br>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
+
   <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id %>
+    <%= f.label :category, 'category' %><br>
+    <%= f.select(:category, class: 'form-control') do %>
+      <% [['none', 'none'],
+          ['tickets', 'tickets'],
+          ['plugin', 'plugin'],
+          ['website', 'website'],
+          ['techsupport', 'techsupport'],
+          ['research', 'research'],
+          ['design', 'design'],
+          ['development', 'development'],
+          ['meeting', 'meeting'],
+          ['break', 'break']].each do |c| -%>
+        <%= content_tag(:option, c.first, value: c.last) %>
+      <% end %>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :active %><br>
-    <%= f.check_box :active %>
-  </div>
-  <div class="field">
-    <%= f.label :duration %><br>
-    <%= f.time_select :duration %>
-  </div>
-  <div class="field">
-    <%= f.label :created_at %><br>
-    <%= f.datetime_select :created_at %>
-  </div>
-  <div class="field">
-    <%= f.label :started_at %><br>
-    <%= f.datetime_select :started_at %>
-  </div>
-  <div class="field">
-    <%= f.label :stopped_at %><br>
-    <%= f.datetime_select :stopped_at %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+  <%= f.submit "create task", class: "btn btn-default btn-primary" %>
+
 <% end %>

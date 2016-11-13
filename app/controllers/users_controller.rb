@@ -10,6 +10,9 @@ class UsersController < ApplicationController
 
   # Shows the user profile
   def show
+    # This will get the route of the user with the id entered in the
+    # path but the before_action :correct_user will redirect the user
+    # to the path with his user_id depending on the session id.
     @users = User.where(id: params[:id])
     @tasks = Task.where(user_id: session[:user_id])
   end
@@ -41,6 +44,13 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    @user ||= current_user # User.find_by(id: session[:user_id])
+    @user.destroy
+    log_out
+    redirect_to root_url
   end
 
   # Methods

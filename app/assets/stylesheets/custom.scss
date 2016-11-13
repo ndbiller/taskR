@@ -56,9 +56,21 @@ p {
   line-height: 1.7em;
 }
 
+a, a:visited {
+  color: #989898;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #EFEFEF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 /* header */
 
-.logo {
+a.logo {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
@@ -68,9 +80,17 @@ p {
   color: #EFEFEF;
 }
 
-.logo:hover {
+a.logo:hover {
   color: #EFEFEF;
   text-decoration: none;
+}
+
+.default-values {
+  border: 1px solid #EFEFEF;
+  border-radius: 5px;
+  background-color: darken(#EFEFEF, 70%);
+  padding: 25px;
+  margin: 20px 0;
 }
 
 /* footer */
@@ -106,8 +126,6 @@ footer a:hover {
   text-decoration: none;
   cursor: pointer;
 }
-
-
 
 footer li a.dropdown-item:hover, footer li a.dropdown-item:focus {
   background-color: darken(#EFEFEF, 5%);
@@ -164,7 +182,7 @@ $gray-medium-light: #989898;
 
 .debug_dump {
   width: 100%;
-  background: red;//#ABCEED;
+  background: #337ab7;
   @include box_sizing;
 }
 
@@ -188,8 +206,8 @@ aside {
     }
     h1 {
       font-size: 1.4em;
-      text-align: left;
-      letter-spacing: -1px;
+      text-align: center;
+      letter-spacing: 0;
       margin-bottom: 3px;
       margin-top: 0px;
     }
@@ -197,21 +215,25 @@ aside {
 }
 
 .gravatar {
-  float: left;
-  margin-right: 10px;
+  margin: auto;
+  max-width: 80px;
+  display: block;
 }
 
 .gravatar_edit {
-  margin-top: 15px;
+  margin: auto;
+  max-width: 80px;
+  display: block;
 }
 
 /* forms */
 
 input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
+  //border: 1px solid #efefef;
   width: 100%;
   margin-bottom: 15px;
-  @include box_sizing;
+  color: #555;
+  //@include box_sizing;
 }
 
 input {
@@ -219,9 +241,9 @@ input {
 }
 
 #error_explanation {
-  color: red;
+  color: #c9302c;
   ul {
-    color: red;
+    color: #c9302c;
     margin: 0 0 30px 0;
   }
 }
@@ -284,20 +306,34 @@ footer li a:hover {
   cursor: pointer;
 }
 
+.date-time-row > select {
+  color: #555;
+}
+
+#task_created_at_1i, #task_started_at_1i, #task_stopped_at_1i, #task_updated_at_1i {
+  float:left;
+  width: 20%;//100px;
+  margin-right: 5px;
+}
+
+#task_created_at_2i, #task_created_at_3i,
+#task_started_at_2i, #task_started_at_3i,
+#task_stopped_at_2i, #task_stopped_at_3i,
+#task_updated_at_2i, #task_updated_at_3i {
+  width: 20%;//150px;
+}
+
+#task_created_at_4i, #task_created_at_5i,
+#task_started_at_4i, #task_started_at_5i,
+#task_stopped_at_4i, #task_stopped_at_5i,
+#task_updated_at_4i, #task_updated_at_5i {
+  width: 15%;//75px;
+}
+
 /* clock */
 
 .center-content {
   margin: 0 auto;
   display: block;
   max-width: 600px;
-}
-
-@media all and (max-width: 680px) {
-  .center-content > #fancyClock > div.clock {
-    max-width: 600px;
-    max-height: 200px;
-    margin: 0 auto;
-    display: block;
-    float: none;
-  }
 }

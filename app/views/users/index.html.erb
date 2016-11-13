@@ -1,4 +1,5 @@
 <% provide(:title, User.find(session[:user_id]).name) %>
+
 <div class="row">
   <section class="user_tasks">
     <p id="notice"><%= notice %></p>
@@ -11,7 +12,8 @@
             <th>id</th>
             <th>name</th>
             <th>email</th>
-            <th>password</th>
+            <!--<th>password</th>-->
+            <th>tasks</th>
             <th>created at</th>
             <th>updated at</th>
             <th colspan="3"></th>
@@ -23,7 +25,8 @@
               <td><%= user.id %></td>
               <td><%= user.name %></td>
               <td><%= user.email %></td>
-              <td><%= user.password_digest %></td>
+              <!--<td><input type="password" value="<%= user.password_digest %>" class="field new_task" disabled="disabled"></td>-->
+              <td><%= user.count_of_tasks %></td>
               <td><%= user.created_at %></td>
               <td><%= user.updated_at %></td>
               <td><%= link_to 'Show', user, class: 'btn btn-primary btn-sm' %></td>
