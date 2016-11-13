@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TaskR | <%= yield(:title) %></title>
-  <!-- viewport zoomed in for mobile devices -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- expire cache and force page to reload on back button and other navigation to reinitialize the clock script that animates the circles -->
-  <meta http-equiv="expires" content="-1">
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Cache-Control" content="no-cache" />
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag(yield :optional_javascript) %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div class="container-fluid">
-    <%= render 'layouts/header' %>
-    <div class="page">
-      <div class="container">
-        <% flash.each do |message_type, message| %>
-            <div class="alert alert-<%= message_type %>"><%= message %></div>
-        <% end %>
-        <%= debug(params) if Rails.env.development? %>
-        <%= yield %>
+  <head>
+    <title>TaskR | <%= yield(:title) %></title>
+    <meta charset="utf-8">
+    <!-- viewport zoomed in for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag(yield :javascript_clock) %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <%= render 'layouts/header' %>
+      <div class="page">
+        <div class="container">
+          <% flash.each do |message_type, message| %>
+              <div class="alert alert-<%= message_type %>"><%= message %></div>
+          <% end %>
+          <%= debug(params) if Rails.env.development? %>
+          <%= yield %>
+        </div>
       </div>
     </div>
-  </div>
-  <%= render 'layouts/footer' %>
-</body>
+    <%= render 'layouts/footer' %>
+  </body>
 </html>

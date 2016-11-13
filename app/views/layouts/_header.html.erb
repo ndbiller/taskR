@@ -1,4 +1,6 @@
-<% provide(:optional_javascript, javascript_path(path_to_javascript('clock.js'))) %>
+<% provide(:javascript_clock, javascript_path(path_to_javascript('clock.js'))) %>
+<% logged_in? ? @user = current_user : @user = {name: ''} %>
+
 <header>
   <!-- Static navbar -->
   <nav class="navbar navbar-fixed-top navbar-inverse">
@@ -16,18 +18,18 @@
       <div id="navbar" class="navbar-collapse collapse">
         <!--<li class="navbar-brand hidden-xs"></li>-->
         <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to "Home", logged_in? ? current_user : root_path %></li>
+          <li><%= link_to "Home", logged_in? ? @user : root_path %></li>
           <% if logged_in? %>
             <li><%= link_to "Tasks", tasks_path %></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><h6 class="dropdown-header">Settings</h6></li>
-                <li><%= link_to "User Configuration", edit_user_path(current_user), class: "dropdown-item" %></li>
+                <li><%= link_to "User Configuration", edit_user_path(@user), class: "dropdown-item" %></li>
                 <li><h6 class="dropdown-header">Development</h6></li>
                 <li><%= link_to "Show all users", users_path, class: "dropdown-item" %></li>
                 <li><%= link_to "Show all tasks", all_tasks_path, class: "dropdown-item" %></li>
                 <li><h6 class="dropdown-header">Quit TaskR</h6></li>
-                <li><%= link_to "Log out", logout_path, method: "delete", class: "dropdown-item" %></li>
+                <li><%= link_to "Log out (User: #{@user.name})", logout_path, method: "delete", class: "dropdown-item" %></li>
               </ul>
             </li>
           <% else %>

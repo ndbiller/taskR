@@ -16,6 +16,7 @@ class TasksController < ApplicationController
     render :index
   end
 
+  # shows a single task
   # GET /tasks/1
   # GET /tasks/1.json
   def show
@@ -24,16 +25,19 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    @user = current_user
   end
 
   # GET /tasks/1/edit
   def edit
+    @user = current_user
   end
 
   # POST /tasks
   # POST /tasks.json
   def create
     @task = Task.new(task_params)
+    @task.start
 
     respond_to do |format|
       if @task.save
@@ -78,6 +82,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :user_id, :active, :duration, :created_at, :started_at, :stopped_at)
+      params.require(:task).permit(:name, :category, :user_id, :active, :duration, :created_at, :updated_at, :started_at, :stopped_at)
     end
 end

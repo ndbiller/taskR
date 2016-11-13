@@ -1,5 +1,18 @@
-<h1>New Task</h1>
+<% provide(:title, User.find(session[:user_id]).name) %>
 
-<%= render 'form' %>
+<div class="row">
+  <section class="user_tasks">
+    <h1>new task</h1>
+    <p><%= link_to "back", tasks_path, class: 'btn btn-success btn-sm btn-block center-content' %></p>
 
-<%= link_to 'Back', tasks_path %>
+
+
+    <%= render 'form' %>
+
+
+
+
+
+
+  </section>
+</div>
