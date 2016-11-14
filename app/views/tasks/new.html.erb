@@ -1,18 +1,9 @@
-<% provide(:title, @user.name) %>
+<% provide(:title, current_user.name) %>
 
 <div class="row">
   <section class="user_tasks">
     <h1>new task</h1>
     <p><%= link_to "back", tasks_path, class: 'btn btn-success btn-sm btn-block center-content' %></p>
-
-
-
     <%= render 'form' %>
-
-
-
-
-
-
   </section>
 </div>

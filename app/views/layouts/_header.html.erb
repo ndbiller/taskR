@@ -25,9 +25,9 @@
               <ul class="dropdown-menu">
                 <li><h6 class="dropdown-header">Settings</h6></li>
                 <li><%= link_to "User Configuration", edit_user_path(@user), class: "dropdown-item" %></li>
-                <li><h6 class="dropdown-header">Development</h6></li>
-                <li><%= link_to "Show all users", users_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Show all tasks", all_tasks_path, class: "dropdown-item" %></li>
+                <li><h6 class="dropdown-header hidden">Development</h6></li>
+                <li><%= link_to "Show all users", users_path, class: "dropdown-item hidden" %></li>
+                <li><%= link_to "Show all tasks", all_tasks_path, class: "dropdown-item hidden" %></li>
                 <li><h6 class="dropdown-header">Quit TaskR</h6></li>
                 <li><%= link_to "Log out (User: #{@user.name})", logout_path, method: "delete", class: "dropdown-item" %></li>
               </ul>

@@ -1,0 +1,49 @@
+<h1>tasks</h1>
+<p><%= link_to "new task", new_task_path, class: 'btn btn-success btn-sm btn-block' %></p>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <!--<th>id</th>
+      <th>user id</th>-->
+      <th class="col-name-task">name</th>
+      <th class="col-category-task">category</th>
+      <th class="col-duration-task">duration</th>
+      <!--<th>created at</th>
+      <th>started at</th>
+      <th>stopped at</th>
+      <th>updated at</th>
+      <th>active</th>-->
+      <th class="col-actions-task" colspan="4">actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% total_duration = 0 %>
+    <% @tasks.each do |task| %>
+        <% total_duration += task.duration %>
+        <tr class="<%= task.active? ? 'active_true' : '' %>">
+          <!--<td><%= task.id %></td>
+          <td><%= task.user_id %></td>-->
+          <td><%= task.name %></td>
+          <td><%= task.category %></td>
+          <td><%= seconds_to_time(task.duration) %></td>
+          <!--<td><%= task.created_at %></td>
+          <td><%= task.started_at %></td>
+          <td><%= task.stopped_at %></td>
+          <td><%= task.updated_at %></td>
+          <td><%= task.active %></td>-->
+          <td><%= link_to "Start", start_task_path(task), class: 'btn btn-success btn-sm' %></td>
+          <td><%= link_to "Stop", stop_task_path(task), class: 'btn btn-danger btn-sm' %></td>
+          <!--<td><%= link_to "Show", task, class: 'btn btn-primary btn-sm' %></td>-->
+          <td><%= link_to "Edit", edit_task_path(task), class: 'btn btn-primary btn-sm' %></td>
+          <td><%= link_to "Remove", task, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm' %></td>
+        </tr>
+    <% end %>
+      <tr>
+        <td colspan="2"></td>
+        <td class="col-task-total"><%= seconds_to_time(total_duration) %></td>
+        <td colspan="4"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

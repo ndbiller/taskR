@@ -6,18 +6,16 @@ class Task < ActiveRecord::Base
 
   def start
     stop_active_tasks
-    self.update(active: true, started_at: Time.zone.now)
+    update(active: true, started_at: Time.zone.now)
   end
 
   def stop
-    self.update(active: false,
-                stopped_at: Time.zone.now,
-                duration: self.duration += (Time.zone.now - self.started_at).to_i)
+    update(active: false,
+           stopped_at: Time.zone.now,
+           duration: self.duration += (Time.zone.now - started_at).to_i)
   end
 
   def stop_active_tasks
-    Task.where(user_id: self.user_id, active: true).each do |task|
-      task.stop
-    end
+    Task.where(user_id: user_id, active: true).each(&:stop)
   end
 end
