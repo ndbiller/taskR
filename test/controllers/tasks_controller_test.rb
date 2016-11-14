@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TasksControllerTest < ActionController::TestCase
   def task
@@ -17,7 +17,7 @@ class TasksControllerTest < ActionController::TestCase
   end
 
   def test_create
-    assert_difference("Task.count") do
+    assert_difference('Task.count') do
       post :create, task: { active: task.active, created_at: task.created_at, duration: task.duration, name: task.name, started_at: task.started_at, stopped_at: task.stopped_at, user_id: task.user_id }
     end
 
@@ -40,7 +40,7 @@ class TasksControllerTest < ActionController::TestCase
   end
 
   def test_destroy
-    assert_difference("Task.count", -1) do
+    assert_difference('Task.count', -1) do
       delete :destroy, id: task
     end
 

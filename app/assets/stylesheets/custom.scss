@@ -168,6 +168,19 @@ footer ul li a {
   line-height: 1.7em;
 }
 
+/* functionality */
+
+.active_true {
+  font-weight: bold;
+  color: lighten(#EFEFEF, 10%);
+  background-color: lighten(#252525, 10%);
+}
+
+.active_true:hover {
+  color: lighten(#EFEFEF, 15%);
+  background-color: lighten(#252525, 15%);
+}
+
 /* mixins, variables, etc. */
 
 $gray-medium-light: #989898;
@@ -255,6 +268,45 @@ input {
   }
 }
 
+/* table columns */
+
+.col-name-user {
+  width: 40%;
+}
+
+.col-email-user {
+  width: 40%;
+}
+
+.col-tasks-user {
+  width: 10%;
+}
+
+.col-actions-user {
+  width: 10%;
+}
+
+.col-name-task {
+  width: 60%;
+}
+
+.col-category-task {
+  width: 10%;
+}
+
+.col-duration-task {
+  width: 10%;
+}
+
+.col-actions-task {
+  width: 20%;
+}
+
+.col-task-total {
+  font-weight: bolder;
+  color: lighten(#EFEFEF, 10%);
+}
+
 /* flash */
 
 .alert {
@@ -267,6 +319,10 @@ input {
 
 .table-hover > tbody > tr:hover {
   background-color: lighten(#252525, 5%);
+}
+.table-hover > tbody > tr.active_true:hover {
+  color: lighten(#EFEFEF, 15%);
+  background-color: lighten(#252525, 15%);
 }
 
 /* header */
