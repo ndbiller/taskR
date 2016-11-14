@@ -18,7 +18,7 @@
             <th>stopped at</th>
             <th>updated at</th>
             <th>active</th>
-            <th colspan="3"></th>
+            <th colspan="5">actions</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +34,8 @@
                 <td><%= task.stopped_at %></td>
                 <td><%= task.updated_at %></td>
                 <td><%= task.active %></td>
+                <td><%= link_to "Start", start_task_path(task), class: 'btn btn-success btn-sm' %></td>
+                <td><%= link_to "Stop", stop_task_path(task), class: 'btn btn-danger btn-sm' %></td>
                 <td><%= link_to "Show", task, class: 'btn btn-primary btn-sm' %></td>
                 <td><%= link_to "Edit", edit_task_path(task), class: 'btn btn-primary btn-sm' %></td>
                 <td><%= link_to "Remove", task, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger btn-sm' %></td>

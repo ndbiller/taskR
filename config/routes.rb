@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   get 'users/:id' => 'users#show', as: :profile
   get 'all_tasks' => 'tasks#all_tasks', as: :all_tasks
+  get 'tasks/:id/start' => 'tasks#start', as: :start_task
+  get 'tasks/:id/stop' => 'tasks#stop', as: :stop_task
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

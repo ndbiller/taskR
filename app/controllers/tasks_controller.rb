@@ -74,6 +74,18 @@ class TasksController < ApplicationController
     end
   end
 
+  def start
+    @task = Task.find(params[:id])
+    @task.start
+    redirect_to all_tasks_url
+  end
+
+  def stop
+    @task = Task.find(params[:id])
+    @task.stop
+    redirect_to all_tasks_url
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
@@ -82,6 +94,7 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
+      binding.pry
       params.require(:task).permit(:name, :category, :user_id, :active, :duration, :created_at, :updated_at, :started_at, :stopped_at)
     end
 end
