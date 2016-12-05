@@ -81,5 +81,4 @@ test:
 production:
   <<: *default
   database: taskR_production
-  username: taskR
-  password: <%= ENV['TASKR_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
