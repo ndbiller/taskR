@@ -1,0 +1,20 @@
+<!-- app/views/tasks/show.pdf.erb -->
+<meta charset="utf-8">
+
+<%= image_tag('logo_handelskammer.png') %>
+
+<h3>Ausbildungsnachweis (täglich)</h3>
+
+<h4>Name des/der Auszubildenden: <%= user.name %></h4>
+<h4>Ausbildungsjahr: <%= '1' %></h4>
+<h4>Ausbildungswoche vom: <%= 'Montag' %> bis: <%= 'Sonntag' %> (KW: <%= '46' %>)</h4>
+<h4>Ggf. ausbildende Abteilung: <%= 'Entwicklung' %></h4>
+
+<h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts: | Stunden:</h5>
+<% tasks.each do |weekday| %>
+    <p style='font-size: 10px;'>
+  <% weekday['46'].each do |task| %>
+    <%= task.category %> - <%= task.name %> | <%= task.duration %><br>
+  <% end %>
+    </p>
+<% end %>

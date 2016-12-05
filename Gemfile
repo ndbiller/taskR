@@ -57,6 +57,13 @@ gem 'devise'
 gem 'cancan'
 gem 'omniauth-google-oauth2'
 
+# enable features such as static asset serving and logging on Heroku
+gem 'rails_12factor', group: :production
+
+# pdf creation
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
