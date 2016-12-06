@@ -11,34 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_161_113_201_435) do
+ActiveRecord::Schema.define(version: 20161113201435) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'tasks', force: :cascade do |t|
-    t.string   'name'
-    t.integer  'user_id'
-    t.boolean  'active'
-    t.datetime 'created_at', null: false
-    t.datetime 'started_at'
-    t.datetime 'stopped_at'
-    t.datetime 'updated_at', null: false
-    t.string   'category'
-    t.integer  'duration'
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.boolean  "active"
+    t.datetime "created_at", null: false
+    t.datetime "started_at"
+    t.datetime "stopped_at"
+    t.datetime "updated_at", null: false
+    t.string   "category"
+    t.integer  "duration"
   end
 
-  add_index 'tasks', ['user_id'], name: 'index_tasks_on_user_id', using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
-  create_table 'users', force: :cascade do |t|
-    t.string   'name'
-    t.string   'email'
-    t.datetime 'created_at',      null: false
-    t.datetime 'updated_at',      null: false
-    t.string   'password_digest'
-    t.integer  'count_of_tasks'
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "password_digest"
+    t.integer  "count_of_tasks"
   end
 
-  add_index 'users', ['email'], name: 'index_users_on_email', unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
-  add_foreign_key 'tasks', 'users'
+  add_foreign_key "tasks", "users"
 end
