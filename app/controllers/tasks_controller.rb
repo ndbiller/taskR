@@ -137,7 +137,10 @@ class TasksController < ApplicationController
     weeks = [monday, tuesday, wednsday, thursday, friday]
 
     respond_to do |format|
-      #format.html
+      format.html do
+        render template: "tasks/print.html.erb",
+               locals: { tasks: weeks, user: @user }
+      end
       format.pdf do
         render pdf: "Ausbildungsnachweis_#{@tasks.first.created_at}",
                template: "tasks/print.pdf.erb",
