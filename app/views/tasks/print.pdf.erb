@@ -1,21 +1,139 @@
 <!-- app/views/tasks/show.pdf.erb -->
 <meta charset="utf-8">
+<style>
+  .page-border{
+    margin: 25px 20px 25px 30px;
+    /*border: 1px solid black;*/
+  }
+  .table-border{
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  .table-border2{
+    border-bottom: 1px solid black;
+  }
+  .logo{
+    margin-top: 0px;
+  }
+  .tab{
+    display: inline-block;
+    width: 50px;
+  }
+  h3{
+    font-size: 14px;
+    margin: 11px -1px;
+    text-align: left;
+  }
+  h4{
+    font-size: 12px;
+    margin: 5px;
+    text-align: left;
+  }
+  h5{
+    font-size: 10px;
+    margin: 5px;
+    text-align: left;
+  }
+  h6{
+    font-size: 8px;
+    margin: 5px;
+    text-align: left;
+  }
+  h1{
+    font-size: 10px;
+    margin: 5px 0;
+    text-align: left;
+  }
+  .table-row{
+    height: 5px;
+  }
+  .table-row2{
+    height: 105px;
+  }
+</style>
 
 
-<%= wicked_pdf_image_tag('logo_handelkammer.png', alt: "IHK Berlin") %>
+<div class="page-border">
+  <h3 class="title"><%= wicked_pdf_image_tag('logo_handelkammer.png', alt: "IHK Berlin", class: "logo") %><div class="tab"></div>Ausbildungsnachweis (täglich) (KW: <%= '46' %>)</h3>
 
-<h3>Ausbildungsnachweis (täglich)</h3>
+  <p></p>
 
-<h4>Name des/der Auszubildenden: <%= user.name %></h4>
-<h4>Ausbildungsjahr: <%= '1' %></h4>
-<h4>Ausbildungswoche vom: <%= 'Montag' %> bis: <%= 'Sonntag' %> (KW: <%= '46' %>)</h4>
-<h4>Ggf. ausbildende Abteilung: <%= 'Entwicklung' %></h4>
+  <table class="table-border">
+    <tr class="table-row">
+      <th style="width: 40%;" class="table-border"><h4>Name des/der Auszubildenden:</h4></th>
+      <th style="width: 60%;" class="table-border" colspan="4"><h4><%= user.name %></h4></th>
+    </tr>
+    <tr class="table-row">
+      <th style="width: 40%;" class="table-border"><h4>Ausbildungsjahr:</h4></th>
+      <th style="width: 10%;" class="table-border"><h4><%= '1' %></h4></th>
+      <th style="width: 26%;" class="table-border" colspan="2"><h4>Ggf. ausbildende Abteilung:</h4></th>
+      <th style="width: 24%;" class="table-border"><h4><%= 'Entwicklung' %></h4></th>
+    </tr>
+    <tr class="table-row">
+      <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
+      <th style="width: 10%;" class="table-border"><h4><%= 'Montag' %></h4></th>
+      <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
+      <th style="width: 40%;" class="table-border" colspan="2"><h4><%= 'Sonntag' %></h4></th>
+    </tr>
+  </table>
 
-<h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts: | Stunden:</h5>
-<% tasks.each do |weekday| %>
-    <p style='font-size: 10px;'>
-  <% weekday['46'].each do |task| %>
-    <%= task.category %> - <%= task.name %> | <%= task.duration %><br>
-  <% end %>
-    </p>
-<% end %>
+  <p></p>
+
+  <table style="width: 100%;" class="table-border">
+    <tr style="background-color: #dcdcdc" class="table-row">
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+      <th style="width: 80%;" class="table-border"><h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts:</h5></th>
+      <th style="width: 10%;" class="table-border"><h5>Stunden</h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Montag</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Dienstag</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Mittwoch</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Donnerstag</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Freitag</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+    <tr class="table-row2">
+      <th style="width: 10%;" class="table-border"><h5>Samstag</h5></th>
+      <th style="width: 80%;" class="table-border"><h5></h5></th>
+      <th style="width: 10%;" class="table-border"><h5></h5></th>
+    </tr>
+  </table>
+
+  <p></p>
+
+  <h6>Durch die nachfolgende Unterschrift wird die Richtigkeit und Vollständigkeit der obigen Angaben bestätigt.</h6>
+
+  <p><br></p>
+
+  <table style="width: 100%;">
+    <tr>
+      <th style="width: 40%;" class="table-border2"><h1></h1></th>
+      <th style="width: 20%;"><h1></h1></th>
+      <th style="width: 40%;" class="table-border2"><h1></h1></th>
+    </tr>
+    <tr>
+      <th style="width: 40%;"><h1>Datum, Unterschrift Auszubildende/r</h1></th>
+      <th style="width: 20%;"><h1></h1></th>
+      <th style="width: 40%;"><h1>Datum, Unterschrift Ausbildende/r oder Ausbilder/in</h1></th>
+    </tr>
+  </table>
+
+</div>

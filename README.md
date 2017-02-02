@@ -59,7 +59,9 @@ drop the local database before you pull the new one from heroku:
 ```
 sudo su postgres  
 (enter your sudo password)  
-dropdb taskR_development  
+psql  
+DROP DATABASE "taskR_development"  
+\q  
 exit  
 ```
 
