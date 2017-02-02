@@ -14,18 +14,10 @@ required environment variables:
 - SECRET_KEY_BASE_TEST  
 - SECRET_KEY_BASE  
 
-before *bundle exec rails s*, run:  
+run:  
 
 source .env  
-
-connect to the local postgres database and list all databases:  
-
-sudo su postgres  
-(enter your sudo password)  
-psql  
-\l  
-\q  
-exit  
+bundle exec rails s  
 
 ## production
 
@@ -42,6 +34,15 @@ heroku pg:info --app task-r
 get info on the local postgres database version:  
 
 psql -V  
+
+connect to the local postgres database and list all databases:  
+
+sudo su postgres  
+(enter your sudo password)  
+psql  
+\l  
+\q  
+exit  
 
 drop the local database before you pull the new one from heroku:  
 
