@@ -111,9 +111,9 @@
     </tr>
     <tr class="table-row">
       <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
-      <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[0][calendar_week][0].created_at, :format => '%d. %B') %></h4></th>
+      <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - starting_weekday), :format => '%d. %B') %></h4></th>
       <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
-      <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[0][calendar_week][0].created_at.advance(days: 6), :format => '%d. %B %Y')
+      <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 6 - starting_weekday), :format => '%d. %B %Y')
       %></h4></th>
     </tr>
   </table>
@@ -127,17 +127,18 @@
       <th style="width: 10%;" class="table-border center-text"><h5>Stunden</h5></th>
     </tr>
     <% total_time_week = 0 %>
-    <% tasks.each do |weekday| %>
+    <% tasks.each_with_index do |weekday, i| %>
         <% total_time_day = 0 %>
-        <tr class="table-row2">
-          <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize(weekday[calendar_week][0].created_at, :format => '%A') %><br><%= I18n.localize(weekday[calendar_week][0].created_at, :format => '%d.%m.%Y') %></h5></th>
-          <th style="width: 80%;" class="table-border"><h2><% weekday[calendar_week].each do |task| %><%= task.category %> - <%= task.name %><br><% end %><hr><span class="total"><%= I18n.localize(weekday[calendar_week][0].created_at, :format => '%A') %> Total:</span></h2></th>
-          <th style="width: 10%;" class="table-border center-text"><h2><% weekday[calendar_week].each do |task| %><%= seconds_to_time(task.duration) %><% total_time_day += task.duration %><br><% end %><hr><span class="total"><%= seconds_to_time(total_time_day) %></span></h2></th>
-        </tr>
+          <tr class="table-row2">
+            <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%d.%m.%Y') %></h5></th>
+            <th style="width: 80%;" class="table-border"><h2><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><%= task.category %> - <%= task.name %><br><% end %><hr><span class="total"><%= weekday[calendar_week].nil? ? "" : I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') + "Total:" %> </span></h2></th>
+            <th style="width: 10%;" class="table-border center-text"><h2><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><%= seconds_to_time(task.duration) %><% total_time_day += task.duration %><br><% end %><hr><span class="total"><%= weekday[calendar_week].nil? ? "" : seconds_to_time(total_time_day) %></span></h2></th>
+          </tr>
         <% total_time_week += total_time_day %>
     <% end %>
     <tr class="table-row3">
-      <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize(tasks[0][calendar_week][0].created_at.advance(days: 5), :format => '%A') %><br><%= I18n.localize(tasks[0][calendar_week][0].created_at.advance(days: 5), :format => '%d.%m.%Y') %></h5></th>
+      <% #binding.pry %>
+      <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize( tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%d.%m.%Y') %></h5></th>
       <th style="width: 80%;" class="table-border"><h2></h2></th>
       <th style="width: 10%;" class="table-border center-text"><h2></h2></th>
     </tr>
