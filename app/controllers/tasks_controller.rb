@@ -139,23 +139,37 @@ class TasksController < ApplicationController
       end
     end
 
-    # TODO: check for nil and handle nil in view
-
-
     @weeks = [monday, tuesday, wednsday, thursday, friday]
 
     # add one because even though the difference in years is zero, it is the first year of learning stuff
-    @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
+    @ausbildungsjahr = 0
+    @starting_weekday = 0
+
+    @weeks.each_with_index do |weekday, i|
+      @starting_weekday = i
+      next if weekday[i].nil?
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, weekday[i][@calendar_week][0].created_at) + 1
+    end
+
+    #binding.pry
+    if @weeks[@starting_weekday][@calendar_week].nil?
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
+    else
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[@starting_weekday][@calendar_week][0].created_at) + 1
+    end
+
+
+
 
     respond_to do |format|
       format.html do
         render template: "tasks/print.html.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
       end
       format.pdf do
         render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
                template: "tasks/print.pdf.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
       end
     end
   end
@@ -222,17 +236,31 @@ class TasksController < ApplicationController
     @weeks = [monday, tuesday, wednsday, thursday, friday]
 
     # add one because even though the difference in years is zero, it is the first year of learning stuff
-    @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
+    @ausbildungsjahr = 0
+    @starting_weekday = 0
+
+    @weeks.each_with_index do |weekday, i|
+      @starting_weekday = i
+      next if weekday[i].nil?
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, weekday[i][@calendar_week][0].created_at) + 1
+    end
+
+    #binding.pry
+    if @weeks[@starting_weekday][@calendar_week].nil?
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
+    else
+      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[@starting_weekday][@calendar_week][0].created_at) + 1
+    end
 
     respond_to do |format|
       format.html do
         render template: "tasks/print.html.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
       end
       format.pdf do
         render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
                template: "tasks/print.pdf.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
       end
     end
   end
