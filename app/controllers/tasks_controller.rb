@@ -87,9 +87,12 @@ class TasksController < ApplicationController
   end
 
   def print_tasks
-    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }
-    @tasks = tasks.sort_by(&:created_at)
+    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
     @user = User.find(session[:user_id])
+    # TODO: set these variables from user settings or calendar_week dropdown list selection
+    @abteilung = 'Entwicklung' # TODO: get this from user
+    beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
+    @calendar_week = '46' # TODO: get this from user input (print button toggles > tasks calendar_week dropdown list)
 
     monday = {}
     tuesday = {}
@@ -97,7 +100,7 @@ class TasksController < ApplicationController
     thursday = {}
     friday = {}
 
-    @tasks.each do |task|
+    tasks.each do |task|
       week = task.created_at.strftime('%V')
       day = task.created_at.strftime('%u')
       case day
@@ -134,22 +137,33 @@ class TasksController < ApplicationController
       end
     end
 
-    weeks = [monday, tuesday, wednsday, thursday, friday]
+    @weeks = [monday, tuesday, wednsday, thursday, friday]
+
+    # add one because even though the difference in years is zero, it is the first year of learning stuff
+    @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
 
     respond_to do |format|
       format.html do
         render template: "tasks/print.html.erb",
-               locals: { tasks: weeks, user: @user }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
       end
       format.pdf do
-        render pdf: "Ausbildungsnachweis_#{@tasks.first.created_at}",
+        render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
                template: "tasks/print.pdf.erb",
-               locals: { tasks: weeks, user: @user }
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
       end
     end
   end
 
   private
+
+  # gives back the number of completed years between a start_date and a date
+  def difference_in_years(startdate, date)
+    # Difference in years, minus one if startdate has not recurred this year.
+    a = date.year - startdate.year
+    a = a - 1 if ( startdate.month >  date.month or (startdate.month >= date.month and startdate.day > date.day) )
+    a
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_task
