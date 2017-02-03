@@ -163,7 +163,7 @@ class TasksController < ApplicationController
   def print_tasks
     tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
     @user = User.find(session[:user_id])
-    # binding.pry
+
     if params[:week].split('-')[1].nil?
       @calendar_week = params[:week]
     else

@@ -15,7 +15,6 @@ class UsersController < ApplicationController
     # to the path with his user_id depending on the session id.
     @users = User.where(id: params[:id])
     tasks = Task.where(user_id: session[:user_id])
-    # binding.pry
     @tasks = tasks.sort_by(&:created_at)
   end
 
