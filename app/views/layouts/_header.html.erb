@@ -14,7 +14,7 @@
        calendar_weeks_header[year + "-" + week][:tasks] += 1
      end
    end
-# weeks[0][0].split("-")[1]
+
    weeks_header = calendar_weeks_header.sort %>
 
 <header>
@@ -38,7 +38,7 @@
           <li><%= link_to "Home", logged_in? ? @user : root_path %></li>
           <% if logged_in? %>
             <li><%= link_to "Tasks", tasks_path %></li>
-            <li><%= link_to "Print", print_tasks_url(params[:week].split('-')[1].nil? ? weeks_header[0][0] : params[:week].split('-')[1]) + '.pdf' %></li>
+            <li class='<%= logged_in? ? "" : "hidden"%>'><%= link_to "Print", print_tasks_url(params[:week].nil? ? weeks_header[0][0] : params[:week].split('-')[1]) + '.pdf'%></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Week <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><h6 class="dropdown-header">display selected weeks tasks</h6></li>
