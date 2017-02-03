@@ -1,5 +1,21 @@
 <% provide(:javascript_clock, javascript_path(path_to_javascript('clock.js'))) %>
 <% logged_in? ? @user = current_user : @user = {name: ''} %>
+<% tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
+
+   calendar_weeks_header = {}
+
+   tasks.each do |task|
+     week = task.created_at.strftime('%V')
+     year = task.created_at.year.to_s
+
+     if calendar_weeks_header[year + "-" + week].nil?
+       calendar_weeks_header[year + "-" + week] = {tasks: 1}
+     else
+       calendar_weeks_header[year + "-" + week][:tasks] += 1
+     end
+   end
+# weeks[0][0].split("-")[1]
+   weeks_header = calendar_weeks_header.sort %>
 
 <header>
   <!-- Static navbar -->
@@ -22,7 +38,16 @@
           <li><%= link_to "Home", logged_in? ? @user : root_path %></li>
           <% if logged_in? %>
             <li><%= link_to "Tasks", tasks_path %></li>
-            <li><%= link_to "Print", print_tasks_url + '.pdf' %></li>
+              <% #binding.pry %>
+            <li><%= link_to "Print", print_tasks_url(params[:week].split('-')[1].nil? ? weeks_header[0][0] : params[:week].split('-')[1]) + '.pdf' %></li>
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Week <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><h6 class="dropdown-header">display selected weeks tasks</h6></li>
+                <% weeks_header.each do |week| %>
+                    <li><h5 class="dropdown-item weeks"><a href="/tasks/week/<%= week[0] %>"><%= week[0] %></a></h5></li>
+                <% end %>
+              </ul>
+            </li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><h6 class="dropdown-header">Settings</h6></li>

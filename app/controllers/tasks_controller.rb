@@ -86,13 +86,95 @@ class TasksController < ApplicationController
     redirect_to tasks_url
   end
 
-  def print_tasks
+  def week
     tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
     @user = User.find(session[:user_id])
+    @calendar_week = params[:week].split('-')[1]
+    @calendar_year = params[:week].split('-')[0]
+
     # TODO: set these variables from user settings or calendar_week dropdown list selection
     @abteilung = 'Entwicklung' # TODO: get this from user
     beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
-    @calendar_week = '46' # TODO: get this from user input (print button toggles > tasks calendar_week dropdown list)
+
+    monday = {}
+    tuesday = {}
+    wednsday = {}
+    thursday = {}
+    friday = {}
+
+    tasks.each do |task|
+      week = task.created_at.strftime('%V')
+      day = task.created_at.strftime('%u')
+      case day
+        when '1'
+          if monday[week].nil?
+            monday[week] = [task]
+          else
+            monday[week] << task
+          end
+        when '2'
+          if tuesday[week].nil?
+            tuesday[week] = [task]
+          else
+            tuesday[week] << task
+          end
+        when '3'
+          if wednsday[week].nil?
+            wednsday[week] = [task]
+          else
+            wednsday[week] << task
+          end
+        when '4'
+          if thursday[week].nil?
+            thursday[week] = [task]
+          else
+            thursday[week] << task
+          end
+        when '5'
+          if friday[week].nil?
+            friday[week] = [task]
+          else
+            friday[week] << task
+          end
+      end
+    end
+
+    # TODO: check for nil and handle nil in view
+
+
+    @weeks = [monday, tuesday, wednsday, thursday, friday]
+
+    # add one because even though the difference in years is zero, it is the first year of learning stuff
+    @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
+
+    respond_to do |format|
+      format.html do
+        render template: "tasks/print.html.erb",
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+      end
+      format.pdf do
+        render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
+               template: "tasks/print.pdf.erb",
+               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr }
+      end
+    end
+  end
+
+  def print_tasks
+    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
+    @user = User.find(session[:user_id])
+    # binding.pry
+    if params[:week].split('-')[1].nil?
+      @calendar_week = params[:week]
+    else
+      @calendar_week = params[:week].split('-')[1]
+      @calendar_year = params[:week].split('-')[0]
+    end
+
+    # TODO: set these variables from user settings or calendar_week dropdown list selection
+    @abteilung = 'Entwicklung' # TODO: get this from user
+    beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
+
 
     monday = {}
     tuesday = {}

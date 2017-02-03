@@ -1,0 +1,7 @@
+<% provide(:title, User.find(session[:user_id]).name) %>
+
+<div class="row">
+  <section class="user_tasks">
+    <%= render partial: 'shared/tasks', locals: {tasks: @tasks } %>
+  </section>
+</div>
