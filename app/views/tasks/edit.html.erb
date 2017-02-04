@@ -1,3 +1,5 @@
+<% provide(:title, User.find(session[:user_id]).name) %>
+
 <h1>edit task</h1>
 
 <%= render 'form' %>
