@@ -1,15 +1,25 @@
 <!-- app/views/tasks/show.pdf.erb -->
-
 <head>
-
   <meta charset="utf-8">
-
   <style>
-    body{
-      background-color: #EFEFEF;
+    page[size="A4"] {
+      background: white;
+      width: 21cm;
+      height: 29.7cm;
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 0.5cm;
+      box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+    @media print {
+      body, page[size="A4"] {
+        margin: 0;
+        box-shadow: 0;
+      }
     }
     .page-border{
       margin: 25px 20px 25px 30px;
+      padding: 50px 25px 50px 20px;
       /*border: 1px solid black;*/
     }
     .table-border{
@@ -21,7 +31,10 @@
     }
     .tab{
       display: inline-block;
-      width: 50px;
+      width: 100px;
+    }
+    h3.title img{
+      vertical-align: middle;
     }
     h1,h2,h3,h4,h5,h6{
       color: #252525;
@@ -31,33 +44,49 @@
     }
     h3{
       font-size: 14px;
-      margin: 11px -1px;
+      margin: 11px 0;
       text-align: left;
+      font-weight: bolder;
     }
     h4{
       font-size: 12px;
       margin: 5px;
       text-align: left;
+      font-weight: bolder;
     }
     h5{
       font-size: 10px;
       margin: 5px;
       text-align: left;
+      font-weight: bolder;
     }
     h6{
       font-size: 10px;
       margin: 5px;
       text-align: left;
+      letter-spacing: 0.001em;
+      font-weight: bolder;
     }
     h1{
       font-size: 10px;
       margin: 5px 0;
       text-align: left;
+      letter-spacing: 0.001em;
+      font-weight: bolder;
     }
     h2{
-      font-size: 7px;
-      margin: 2px 5px;
+      font-size: 9px;
+      margin: 5px;
       text-align: left;
+      letter-spacing: 0.001em;
+      line-height: 6px;
+    }
+    h2.total{
+      font-size: 9px;
+      font-weight: bolder;
+      color: #111111;
+      vertical-align: bottom;
+      text-align: right;
     }
     .table-row{
       height: 5px;
@@ -74,103 +103,84 @@
     hr{
       color: #666666;
     }
-    .total{
-      font-size: 105%;
-      font-weight: bold;
-      color: #525252;
-    }
     .center-text > h5, .center-text > h2{
       text-align: center !important;
     }
   </style>
-
 </head>
-
 <body>
-
-<div class="page-border">
-
-  <h3 class="title">
-    <%= image_tag('logo_handelkammer.png', alt: "IHK Berlin") %>
-    <div class="tab"></div>
-    Ausbildungsnachweis (täglich)
-  </h3>
-
-  <p></p>
-
-  <table class="table-border">
-    <tr class="table-row">
-      <th style="width: 40%;" class="table-border"><h4>Name des/der Auszubildenden:</h4></th>
-      <th style="width: 60%;" class="table-border" colspan="4"><h4><%= user.name %></h4></th>
-    </tr>
-    <tr class="table-row">
-      <th style="width: 40%;" class="table-border"><h4>Ausbildungsjahr:</h4></th>
-      <th style="width: 16%;" class="table-border"><h4><%= ausbildungsjahr %></h4></th>
-      <th style="width: 26%;" class="table-border" colspan="2"><h4>Ggf. ausbildende Abteilung:</h4></th>
-      <th style="width: 18%;" class="table-border"><h4><%= abteilung %></h4></th>
-    </tr>
-    <tr class="table-row">
-      <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
-      <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - starting_weekday), :format => '%d. %B') %></h4></th>
-      <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
-      <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 6 - starting_weekday), :format => '%d. %B %Y')
-      %></h4></th>
-    </tr>
-  </table>
-
-  <p></p>
-
-  <table style="width: 100%;" class="table-border">
-    <tr style="background-color: #dcdcdc" class="table-row">
-      <th style="width: 10%;" class="table-border center-text"><h5>KW <%= calendar_week %></h5></th>
-      <th style="width: 80%;" class="table-border"><h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts:</h5></th>
-      <th style="width: 10%;" class="table-border center-text"><h5>Stunden</h5></th>
-    </tr>
-    <% total_time_week = 0 %>
-    <% tasks.each_with_index do |weekday, i| %>
-        <% total_time_day = 0 %>
-          <tr class="table-row2">
-            <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%d.%m.%Y') %></h5></th>
-            <th style="width: 80%;" class="table-border"><h2><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><%= task.category %> - <%= task.name %><br><% end %><hr><span class="total"><%= weekday[calendar_week].nil? ? "" : I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') + "Total:" %> </span></h2></th>
-            <th style="width: 10%;" class="table-border center-text"><h2><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><%= seconds_to_time(task.duration) %><% total_time_day += task.duration %><br><% end %><hr><span class="total"><%= weekday[calendar_week].nil? ? "" : seconds_to_time(total_time_day) %></span></h2></th>
-          </tr>
-        <% total_time_week += total_time_day %>
-    <% end %>
-    <tr class="table-row3">
-      <% #binding.pry %>
-      <th style="width: 10%;" class="table-border center-text"><h5><%= I18n.localize( tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%d.%m.%Y') %></h5></th>
-      <th style="width: 80%;" class="table-border"><h2></h2></th>
-      <th style="width: 10%;" class="table-border center-text"><h2></h2></th>
-    </tr>
-  </table>
-
-  <table style="width: 100%;">
-    <tr class="table-row4">
-      <th style="width: 10%;" class="center-text"><h2></h2></th>
-      <th style="width: 80%;"><h2><span class="total">Kalenderwoche <%= calendar_week %> Total:</span></h2></th>
-      <th style="width: 10%;" class="center-text"><h2><span class="total"><%= seconds_to_time(total_time_week) %></span></h2></th>
-    </tr>
-  </table>
-
-  <p></p>
-
-  <h6>Durch die nachfolgende Unterschrift wird die Richtigkeit und Vollständigkeit der obigen Angaben bestätigt.</h6>
-
-  <p><br></p>
-
-  <table style="width: 100%;">
-    <tr>
-      <th style="width: 40%;" class="table-border2"><h1></h1></th>
-      <th style="width: 20%;"><h1></h1></th>
-      <th style="width: 40%;" class="table-border2"><h1></h1></th>
-    </tr>
-    <tr>
-      <th style="width: 40%;"><h1>Datum, Unterschrift Auszubildende/r</h1></th>
-      <th style="width: 20%;"><h1></h1></th>
-      <th style="width: 40%;"><h1>Datum, Unterschrift Ausbildende/r oder Ausbilder/in</h1></th>
-    </tr>
-  </table>
-
-</div>
-
+  <page size="A4">
+    <div class="page-border">
+      <h3 class="title">
+        <%= image_tag('logo_handelkammer.png', alt: "IHK Berlin") %>
+        <div class="tab"></div>
+        Ausbildungsnachweis (täglich)
+      </h3>
+      <p></p>
+      <table class="table-border">
+        <tr class="table-row">
+          <th style="width: 40%;" class="table-border"><h4>Name des/der Auszubildenden:</h4></th>
+          <th style="width: 60%;" class="table-border" colspan="4"><h4><%= user.name %></h4></th>
+        </tr>
+        <tr class="table-row">
+          <th style="width: 40%;" class="table-border"><h4>Ausbildungsjahr:</h4></th>
+          <th style="width: 16%;" class="table-border"><h4><%= ausbildungsjahr %></h4></th>
+          <th style="width: 26%;" class="table-border" colspan="2"><h4>Ggf. ausbildende Abteilung:</h4></th>
+          <th style="width: 18%;" class="table-border"><h4><%= abteilung %></h4></th>
+        </tr>
+        <tr class="table-row">
+          <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
+          <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - starting_weekday), :format => '%d. %B') %></h4></th>
+          <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
+          <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 6 - starting_weekday), :format => '%d. %B %Y')
+          %></h4></th>
+        </tr>
+      </table>
+      <p></p>
+      <table style="width: 100%;" class="table-border">
+        <tr style="background-color: #dcdcdc" class="table-row">
+          <th style="width: 10%;" class="table-border center-text"><h5>KW <%= calendar_week %></h5><h5><%= @calendar_year %></h5></th>
+          <th style="width: 80%;" class="table-border"><h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts:</h5></th>
+          <th style="width: 10%;" class="table-border center-text"><h5>Stunden</h5></th>
+        </tr>
+        <% total_time_week = 0 %>
+        <% tasks.each_with_index do |weekday, i| %>
+            <% total_time_day = 0 %>
+              <tr class="table-row2">
+                <th style="width: 10%;" valign="middle" class="table-border center-text"><h5><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%d.%m.%Y') %></h5></th>
+                <th style="width: 80%;" valign="top" class="table-border"><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><h2><%= task.category %> - <%= task.name %></h2><% end %><h2 class="total"><%= weekday[calendar_week].nil? ? "" : "Summe:" %></h2></th>
+                <th style="width: 10%;" valign="top" class="table-border center-text"><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><h2><%= seconds_to_time(task.duration) %><% total_time_day += task.duration %></h2><% end %><h2 class="total"><%= weekday[calendar_week].nil? ? "" : seconds_to_time(total_time_day) %></h2></th>
+              </tr>
+            <% total_time_week += total_time_day %>
+        <% end %>
+        <tr class="table-row3">
+          <th style="width: 10%;" valign="middle" class="table-border center-text"><h5><%= I18n.localize( tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%d.%m.%Y') %></h5></th>
+          <th style="width: 80%;" valign="top" class="table-border"><h2></h2></th>
+          <th style="width: 10%;" valign="top" class="table-border center-text"><h2></h2></th>
+        </tr>
+      </table>
+      <table style="width: 100%;">
+        <tr class="table-row4">
+          <th style="width: 10%;" class="center-text"><h2></h2></th>
+          <th style="width: 80%;"><h2 class="total">Gesamt:</h2></th>
+          <th style="width: 10%;" class="center-text"><h2 class="total"><%= seconds_to_time(total_time_week) %></h2></th>
+        </tr>
+      </table>
+      <p><br></p>
+      <h6>Durch die nachfolgende Unterschrift wird die Richtigkeit und Vollständigkeit der obigen Angaben bestätigt.</h6>
+      <p><br></p>
+      <table style="width: 100%;">
+        <tr>
+          <th style="width: 40%;" class="table-border2"><h1></h1></th>
+          <th style="width: 20%;"><h1></h1></th>
+          <th style="width: 40%;" class="table-border2"><h1></h1></th>
+        </tr>
+        <tr>
+          <th style="width: 40%;"><h1>Datum, Unterschrift Auszubildende/r</h1></th>
+          <th style="width: 20%;"><h1></h1></th>
+          <th style="width: 40%;"><h1>Datum, Unterschrift Ausbildende/r oder Ausbilder/in</h1></th>
+        </tr>
+      </table>
+    </div>
+  </page>
 </body>

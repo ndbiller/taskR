@@ -30,7 +30,6 @@
         </button>
         <%= link_to "TaskR", root_path, id: "logo", class: "logo" %>
         <%= link_to "", "", id: "clock", class: "logo" %>
-
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <!--<li class="navbar-brand hidden-xs"></li>-->
@@ -38,13 +37,13 @@
           <li><%= link_to "Home", logged_in? ? @user : root_path %></li>
           <% if logged_in? %>
             <li><%= link_to "Tasks", tasks_path %></li>
-            <li class='<%= logged_in? ? "" : "hidden"%>'><%= link_to "Print", print_tasks_url(params[:week].nil? ? weeks_header[0][0] : params[:week].split('-')[1]) + '.pdf'%></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Week <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><h6 class="dropdown-header">display selected weeks tasks</h6></li>
+                <li><h6 class="dropdown-header header-weeks">show - print</h6></li>
                 <% weeks_header.each do |week| %>
-                    <li><h5 class="dropdown-item weeks"><a href="/tasks/week/<%= week[0] %>"><%= week[0] %></a></h5></li>
+                    <li><h5 class="dropdown-item weeks"><a class="left-KW" href="/tasks/week/#{week[0]}"><%= week[0].to_s %>.html</a><div class="tab-menu"></div><%= link_to "#{week[0]}.pdf", print_tasks_url(week[0]) + '.pdf', class: "right-KW" %></h5></li>
                 <% end %>
+                <li class="list-end"></li>
               </ul>
             </li>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>

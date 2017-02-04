@@ -335,6 +335,36 @@ h5 {
   color: #252525;
 }
 
+h5.weeks{
+  color: #B00100;
+  font-size: 8px;
+  margin: 2px 4px;
+}
+
+.list-end{
+  height: 5px;
+}
+
+li a:hover{
+  color: deeppink;
+}
+
+.tab-menu{
+  width: 15px;
+  height: 15px;
+  /*border: 1px solid green;*/
+  display: inline-block;
+}
+
+.weeks, .header-weeks{
+  text-align: center;
+}
+
+.header-weeks{
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
 /* bootstrap overrides */
 
 a.btn:visited {

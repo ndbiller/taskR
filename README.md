@@ -1,8 +1,11 @@
 # taskR
 
-time tracking web application for trainees  
+Web Application. Does time tracking for IHK trainees who need to print a report of their weekly progress and activities. Made with Ruby and Rails. Runs on Heroku.  
 
 [https://task-r.herokuapp.com/](https://task-r.herokuapp.com/)  
+
+**Fork and deploy to your own Heroku account to use.**  
+*Free Postgres database on Heroku is limited to 10000 rows.*  
 
 ## development
 
@@ -27,11 +30,11 @@ bundle exec rails s
 
 the heroku postgres database is limited to 10000 rows.  
 
-## backup heroku database to local database
+## backup production database from heroku to local postgres database
 
 postgres version should be: 9.5.5  
 
-get info about postgress from heroku:  
+get info about postgres from heroku:  
 
 ```
 heroku pg:info --app task-r  
@@ -50,26 +53,45 @@ sudo su postgres
 (enter your sudo password)  
 psql  
 \l  
-\q  
-exit  
 ```
 
-drop the local database before you pull the new one from heroku:  
+create user with password and alter roles:  
 
+```mysql  
+CREATE USER nd WITH PASSWORD '`echo $TASKR_DATABASE_USERNAME`';  
+ALTER ROLE nd WITH CREATEROLE;  
+ALTER ROLE nd WITH CREATEDB;  
 ```
-sudo su postgres  
-(enter your sudo password)  
-psql  
+
+if it exists, drop the local database before pulling from heroku:  
+
+```mysql  
 DROP DATABASE "taskR_development"  
 \q  
 exit  
 ```
 
-backup the database from heroku to the local database:  
+and backup the production database from heroku to your local postgres database:  
 
 ```
 source .env  
 PGUSER=`echo $TASKR_DATABASE_USERNAME` PGPASSWORD=`echo $TASKR_DATABASE_PASSWORD` heroku pg:pull DATABASE taskR_development --app task-r  
 (enter your heroku credentials: email and password)  
+```
+
+(note: you can push from local to production with the same command, just change pull to push)  
+
+## publish changes to production environment on heroku
+
+deploy changes from master to heroku:  
+
+```
+git push heroku master  
+```
+
+deploy changes from branch to heroku (**bad practice!**):  
+
+```
+git push heroku branchname:master  
 ```
 
