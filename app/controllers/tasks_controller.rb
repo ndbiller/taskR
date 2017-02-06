@@ -96,50 +96,9 @@ class TasksController < ApplicationController
     @abteilung = 'Entwicklung' # TODO: get this from user
     beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
 
-    monday = {}
-    tuesday = {}
-    wednsday = {}
-    thursday = {}
-    friday = {}
+    @weeks = sort_by_weeks(tasks)
 
-    tasks.each do |task|
-      week = task.created_at.strftime('%V')
-      day = task.created_at.strftime('%u')
-      case day
-        when '1'
-          if monday[week].nil?
-            monday[week] = [task]
-          else
-            monday[week] << task
-          end
-        when '2'
-          if tuesday[week].nil?
-            tuesday[week] = [task]
-          else
-            tuesday[week] << task
-          end
-        when '3'
-          if wednsday[week].nil?
-            wednsday[week] = [task]
-          else
-            wednsday[week] << task
-          end
-        when '4'
-          if thursday[week].nil?
-            thursday[week] = [task]
-          else
-            thursday[week] << task
-          end
-        when '5'
-          if friday[week].nil?
-            friday[week] = [task]
-          else
-            friday[week] << task
-          end
-      end
-    end
-
-    @weeks = [monday, tuesday, wednsday, thursday, friday]
+    weekly_tasks = tasks_of_week(@weeks, @calendar_week)
 
     # add one because even though the difference in years is zero, it is the first year of learning stuff
     @ausbildungsjahr = 0
@@ -157,9 +116,6 @@ class TasksController < ApplicationController
     else
       @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[@starting_weekday][@calendar_week][0].created_at) + 1
     end
-
-
-
 
     respond_to do |format|
       format.html do
@@ -189,51 +145,7 @@ class TasksController < ApplicationController
     @abteilung = 'Entwicklung' # TODO: get this from user
     beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
 
-
-    monday = {}
-    tuesday = {}
-    wednsday = {}
-    thursday = {}
-    friday = {}
-
-    tasks.each do |task|
-      week = task.created_at.strftime('%V')
-      day = task.created_at.strftime('%u')
-      case day
-        when '1'
-          if monday[week].nil?
-            monday[week] = [task]
-          else
-            monday[week] << task
-          end
-        when '2'
-          if tuesday[week].nil?
-            tuesday[week] = [task]
-          else
-            tuesday[week] << task
-          end
-        when '3'
-          if wednsday[week].nil?
-            wednsday[week] = [task]
-          else
-            wednsday[week] << task
-          end
-        when '4'
-          if thursday[week].nil?
-            thursday[week] = [task]
-          else
-            thursday[week] << task
-          end
-        when '5'
-          if friday[week].nil?
-            friday[week] = [task]
-          else
-            friday[week] << task
-          end
-      end
-    end
-
-    @weeks = [monday, tuesday, wednsday, thursday, friday]
+    @weeks = sort_by_weeks(tasks)
 
     # add one because even though the difference in years is zero, it is the first year of learning stuff
     @ausbildungsjahr = 0
@@ -272,6 +184,79 @@ class TasksController < ApplicationController
     a = date.year - startdate.year
     a = a - 1 if ( startdate.month >  date.month or (startdate.month >= date.month and startdate.day > date.day) )
     a
+  end
+
+  def tasks_of_week(tasks, calendar_week)
+
+    monday = {}
+    tuesday = {}
+    wednsday = {}
+    thursday = {}
+    friday = {}
+
+    week = [monday, tuesday, wednsday, thursday, friday]
+
+    tasks.each_with_index do |task, i|
+      next if task[calendar_week].nil?
+      day = task[calendar_week].first.created_at.strftime('%A')
+
+      week[i]
+
+      #binding.pry
+
+      task[calendar_week]
+    end
+
+    #binding.pry
+
+    [monday, tuesday, wednsday, thursday, friday]
+  end
+
+  def sort_by_weeks(tasks)
+    monday = {}
+    tuesday = {}
+    wednsday = {}
+    thursday = {}
+    friday = {}
+
+    tasks.each do |task|
+      week = task.created_at.strftime('%V')
+      day = task.created_at.strftime('%u')
+      case day
+        when '1'
+          if monday[week].nil?
+            monday[week] = [task]
+          else
+            monday[week] << task
+          end
+        when '2'
+          if tuesday[week].nil?
+            tuesday[week] = [task]
+          else
+            tuesday[week] << task
+          end
+        when '3'
+          if wednsday[week].nil?
+            wednsday[week] = [task]
+          else
+            wednsday[week] << task
+          end
+        when '4'
+          if thursday[week].nil?
+            thursday[week] = [task]
+          else
+            thursday[week] << task
+          end
+        when '5'
+          if friday[week].nil?
+            friday[week] = [task]
+          else
+            friday[week] << task
+          end
+      end
+    end
+
+    [monday, tuesday, wednsday, thursday, friday]
   end
 
   # Use callbacks to share common setup or constraints between actions.

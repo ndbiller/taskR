@@ -131,6 +131,7 @@
         </tr>
         <tr class="table-row">
           <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
+          <% #binding.pry %>
           <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - starting_weekday), :format => '%d. %B') %></h4></th>
           <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
           <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 6 - starting_weekday), :format => '%d. %B %Y')

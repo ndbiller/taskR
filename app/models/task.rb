@@ -18,4 +18,15 @@ class Task < ActiveRecord::Base
   def stop_active_tasks
     Task.where(user_id: user_id, active: true).each(&:stop)
   end
+
+  #def to_html_table
+  #  html = "<td>#{self.name}</td>
+  #          <td>tickets</td>
+  #          <td>01:38:41</td>
+  #          <td><a class='btn btn-success btn-sm' href='/tasks/5/start'>Start</a></td>
+  #          <td><a class='btn btn-danger btn-sm' href='/tasks/5/stop'>Stop</a></td>
+  #          <td><a class='btn btn-primary btn-sm' href='/tasks/5/edit'>Edit</a></td>
+  #          <td><a data-confirm='Are you sure?' class='btn btn-danger btn-sm' rel='nofollow' data-method='delete' href='/tasks/5'>Remove</a></td>"
+  #  html
+  #end
 end
