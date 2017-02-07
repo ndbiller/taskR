@@ -7,6 +7,12 @@
     <%= f.label :email %>
     <%= f.email_field :email, class: 'form-control' %>
 
+    <%= f.label :department %>
+    <%= f.text_field :department, class: 'form-control' %>
+
+    <%= f.label :start_of_training %>
+    <%= f.date_select :start_of_training, order: [:day, :month, :year], class: 'form-control' %>
+
     <%= f.label :password %>
     <%= f.password_field :password, class: 'form-control' %>
 

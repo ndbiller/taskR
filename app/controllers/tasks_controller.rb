@@ -90,23 +90,20 @@ class TasksController < ApplicationController
     @calendar_week = params[:week].split('-')[1]
     @calendar_year = params[:week].split('-')[0]
     @user = User.find(session[:user_id])
-    # TODO: set these variables from user settings or calendar_week dropdown list selection
-    @abteilung = 'Entwicklung' # TODO: get this from user
-    beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
     tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
     @week = sort_by_week(tasks, @calendar_week, @calendar_year)
-    @ausbildungsjahr = calculate_ausbildungsjahr(@week, beginn_ausbildung, @calendar_week)
+    @ausbildungsjahr = calculate_ausbildungsjahr(@week, @user.start_of_training, @calendar_week)
     @starting_day = find_starting_day(@week, @calendar_week)
 
     respond_to do |format|
       format.html do
         render template: "tasks/print.html.erb",
-               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
+               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @user.department, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
       end
       format.pdf do
         render pdf: "Ausbildungsnachweis-#{@calendar_year}-#{@calendar_week}",
                template: "tasks/print.pdf.erb",
-               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
+               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @user.department, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
       end
     end
   end

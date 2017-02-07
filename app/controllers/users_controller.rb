@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :department, :start_of_training, :password, :password_confirmation)
   end
 
   # Confirms only the correct user can access his routes. Redirects to current users profile if route does not match users id.
