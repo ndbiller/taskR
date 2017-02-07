@@ -131,32 +131,60 @@
         </tr>
         <tr class="table-row">
           <th style="width: 40%;" class="table-border"><h4>Ausbildungswoche vom:</h4></th>
-          <% #binding.pry %>
-          <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - starting_weekday), :format => '%d. %B') %></h4></th>
+          <th style="width: 16%;" class="table-border"><h4><%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: - starting_day), :format => '%d. %B') %></h4></th>
           <th style="width: 10%;" class="table-border"><h4>bis:</h4></th>
-          <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 6 - starting_weekday), :format => '%d. %B %Y')
+          <th style="width: 34%;" class="table-border" colspan="2"><h4><%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: 6 - starting_day), :format => '%d. %B %Y')
           %></h4></th>
         </tr>
       </table>
       <p></p>
       <table style="width: 100%;" class="table-border">
         <tr style="background-color: #dcdcdc" class="table-row">
-          <th style="width: 10%;" class="table-border center-text"><h5>KW <%= calendar_week %></h5><h5><%= @calendar_year %></h5></th>
+          <th style="width: 10%;" class="table-border center-text"><h5>KW <%= week %></h5><h5><%= year %></h5></th>
           <th style="width: 80%;" class="table-border"><h5>Betriebliche Tätigkeiten, Unterweisungen, betrieblicher Unterricht, sonstige Schulungen, Themen des Berufsschulunterrichts:</h5></th>
           <th style="width: 10%;" class="table-border center-text"><h5>Stunden</h5></th>
         </tr>
         <% total_time_week = 0 %>
         <% tasks.each_with_index do |weekday, i| %>
             <% total_time_day = 0 %>
-              <tr class="table-row2">
-                <th style="width: 10%;" valign="middle" class="table-border center-text"><h5><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: - (starting_weekday - i)), :format => '%d.%m.%Y') %></h5></th>
-                <th style="width: 80%;" valign="top" class="table-border"><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><h2><%= task.category %> - <%= task.name %></h2><% end %><h2 class="total"><%= weekday[calendar_week].nil? ? "" : "Summe:" %></h2></th>
-                <th style="width: 10%;" valign="top" class="table-border center-text"><% weekday[calendar_week].nil? ? "" : weekday[calendar_week].each do |task| %><h2><%= seconds_to_time(task.duration) %><% total_time_day += task.duration %></h2><% end %><h2 class="total"><%= weekday[calendar_week].nil? ? "" : seconds_to_time(total_time_day) %></h2></th>
-              </tr>
+            <tr class="table-row2">
+              <th style="width: 10%;" valign="middle" class="table-border center-text">
+                <h5>
+                  <%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: - (starting_day - i)), :format => '%A') %><br>
+                  <%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: - (starting_day - i)), :format => '%d.%m.%Y') %>
+                </h5>
+              </th>
+              <th style="width: 80%;" valign="top" class="table-border">
+                <% weekday[week].nil? ? "" : weekday[week].each do |task| %>
+                    <h2>
+                      <%= task.category %> - <%= task.name %>
+                    </h2>
+                <% end %>
+                <h2 class="total">
+                  <%= weekday[week].nil? ? "" : "Summe:" %>
+                </h2>
+              </th>
+              <th style="width: 10%;" valign="top" class="table-border center-text">
+                <% weekday[week].nil? ? "" : weekday[week].each do |task| %>
+                    <h2>
+                      <%= seconds_to_time(task.duration) %>
+                      <% total_time_day += task.duration %>
+                    </h2>
+                <% end %>
+                <h2 class="total">
+                  <%= weekday[week].nil? ? "" : seconds_to_time(total_time_day) %>
+                </h2>
+              </th>
+            </tr>
             <% total_time_week += total_time_day %>
         <% end %>
         <tr class="table-row3">
-          <th style="width: 10%;" valign="middle" class="table-border center-text"><h5><%= I18n.localize( tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%A') %><br><%= I18n.localize(tasks[starting_weekday][calendar_week][0].created_at.advance(days: 5 - starting_weekday), :format => '%d.%m.%Y') %></h5></th>
+          <th style="width: 10%;" valign="middle" class="table-border center-text">
+            <h5>
+              <%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: 5 - starting_day), :format => '%A') %><br>
+              <%= I18n.localize(tasks[starting_day][week].first.created_at.advance(days: 5 - starting_day), :format => '%d.%m.%Y') %>
+            </h5>
+          </th>
           <th style="width: 80%;" valign="top" class="table-border"><h2></h2></th>
           <th style="width: 10%;" valign="top" class="table-border center-text"><h2></h2></th>
         </tr>
@@ -168,7 +196,7 @@
           <th style="width: 10%;" class="center-text"><h2 class="total"><%= seconds_to_time(total_time_week) %></h2></th>
         </tr>
       </table>
-      <p><br></p>
+      <p></p>
       <h6>Durch die nachfolgende Unterschrift wird die Richtigkeit und Vollständigkeit der obigen Angaben bestätigt.</h6>
       <p><br></p>
       <table style="width: 100%;">

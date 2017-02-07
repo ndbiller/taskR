@@ -41,7 +41,7 @@
               <ul class="dropdown-menu">
                 <li><h6 class="dropdown-header header-weeks">show - print</h6></li>
                 <% weeks_header.each do |week| %>
-                    <li><h5 class="dropdown-item weeks"><a class="left-KW" href="/tasks/week/<%= week[0] %>"><%= week[0].to_s %>.html</a><div class="tab-menu"></div><%= link_to "#{week[0]}.pdf", print_tasks_url(week[0]) + '.pdf', class: "right-KW" %></h5></li>
+                    <li><h5 class="dropdown-item weeks"><a class="left-KW" href="/tasks/week/<%= week[0] %>"><%= week[0].to_s %>.html</a><div class="tab-menu"></div><a class="left-KW" href="/tasks/week/<%= week[0] %>.pdf"><%= week[0].to_s %>.pdf</a></h5></li>
                 <% end %>
                 <li class="list-end"></li>
               </ul>

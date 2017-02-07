@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'all_tasks' => 'tasks#all_tasks', as: :all_tasks
   get 'tasks/:id/start' => 'tasks#start', as: :start_task
   get 'tasks/:id/stop' => 'tasks#stop', as: :stop_task
-  get 'all_tasks/print_tasks/:week' => 'tasks#print_tasks', as: :print_tasks
+  #get 'all_tasks/print_tasks/:week' => 'tasks#print_tasks', as: :print_tasks
   get 'tasks/week/:week' => 'tasks#week', as: :week
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -87,96 +87,54 @@ class TasksController < ApplicationController
   end
 
   def week
-    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
-    @user = User.find(session[:user_id])
     @calendar_week = params[:week].split('-')[1]
     @calendar_year = params[:week].split('-')[0]
-
-    # TODO: set these variables from user settings or calendar_week dropdown list selection
-    @abteilung = 'Entwicklung' # TODO: get this from user
-    beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
-
-    @weeks = sort_by_weeks(tasks)
-
-    weekly_tasks = tasks_of_week(@weeks, @calendar_week)
-
-    # add one because even though the difference in years is zero, it is the first year of learning stuff
-    @ausbildungsjahr = 0
-    @starting_weekday = 0
-
-    @weeks.each_with_index do |weekday, i|
-      @starting_weekday = i
-      next if weekday[i].nil?
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, weekday[i][@calendar_week][0].created_at) + 1
-    end
-
-    #binding.pry
-    if @weeks[@starting_weekday][@calendar_week].nil?
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
-    else
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[@starting_weekday][@calendar_week][0].created_at) + 1
-    end
-
-    respond_to do |format|
-      format.html do
-        render template: "tasks/print.html.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
-      end
-      format.pdf do
-        render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
-               template: "tasks/print.pdf.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
-      end
-    end
-  end
-
-  def print_tasks
-    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
     @user = User.find(session[:user_id])
-
-    if params[:week].split('-')[1].nil?
-      @calendar_week = params[:week]
-    else
-      @calendar_week = params[:week].split('-')[1]
-      @calendar_year = params[:week].split('-')[0]
-    end
-
     # TODO: set these variables from user settings or calendar_week dropdown list selection
     @abteilung = 'Entwicklung' # TODO: get this from user
     beginn_ausbildung = DateTime.parse("2015-09-01") # TODO: get this from user
-
-    @weeks = sort_by_weeks(tasks)
-
-    # add one because even though the difference in years is zero, it is the first year of learning stuff
-    @ausbildungsjahr = 0
-    @starting_weekday = 0
-
-    @weeks.each_with_index do |weekday, i|
-      @starting_weekday = i
-      next if weekday[i].nil?
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, weekday[i][@calendar_week][0].created_at) + 1
-    end
-
-    if @weeks[@starting_weekday][@calendar_week].nil?
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[0][@calendar_week][0].created_at) + 1
-    else
-      @ausbildungsjahr = difference_in_years(beginn_ausbildung, @weeks[@starting_weekday][@calendar_week][0].created_at) + 1
-    end
+    tasks = Task.where(user_id: session[:user_id]).reject { |task| task.category == 'break' }.sort_by(&:created_at)
+    @week = sort_by_week(tasks, @calendar_week, @calendar_year)
+    @ausbildungsjahr = calculate_ausbildungsjahr(@week, beginn_ausbildung, @calendar_week)
+    @starting_day = find_starting_day(@week, @calendar_week)
 
     respond_to do |format|
       format.html do
         render template: "tasks/print.html.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, calendar_year: @calendar_year.nil? ? @weeks[@starting_weekday][0].created_at.year : @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
+               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
       end
       format.pdf do
-        render pdf: "Ausbildungsnachweis_KW#{@calendar_week}",
+        render pdf: "Ausbildungsnachweis-#{@calendar_year}-#{@calendar_week}",
                template: "tasks/print.pdf.erb",
-               locals: { tasks: @weeks, user: @user, calendar_week: @calendar_week, calendar_year: @calendar_year.nil? ? @weeks[@starting_weekday][@calendar_week][0].created_at.year.to_s : @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_weekday: @starting_weekday }
+               locals: { tasks: @week, user: @user, week: @calendar_week, year: @calendar_year, abteilung: @abteilung, ausbildungsjahr: @ausbildungsjahr, starting_day: @starting_day }
       end
     end
   end
 
   private
+
+  def find_starting_day(week, calendar_week)
+    starting_day = 0
+    week.each_with_index do |day, i|
+      next if day[calendar_week].nil?
+      if starting_day == 0
+        starting_day = i
+      else
+        return starting_day
+      end
+    end
+    starting_day
+  end
+
+  def calculate_ausbildungsjahr(week, beginn_ausbildung, calendar_week)
+    ausbildungsjahr = 0
+    week.each do |day|
+      next if day[calendar_week].nil?
+      # add one because even though the difference in years is zero, it is the first year of learning stuff
+      ausbildungsjahr = difference_in_years(beginn_ausbildung, day[calendar_week].first.created_at) + 1
+    end
+    ausbildungsjahr
+  end
 
   # gives back the number of completed years between a start_date and a date
   def difference_in_years(startdate, date)
@@ -186,33 +144,7 @@ class TasksController < ApplicationController
     a
   end
 
-  def tasks_of_week(tasks, calendar_week)
-
-    monday = {}
-    tuesday = {}
-    wednsday = {}
-    thursday = {}
-    friday = {}
-
-    week = [monday, tuesday, wednsday, thursday, friday]
-
-    tasks.each_with_index do |task, i|
-      next if task[calendar_week].nil?
-      day = task[calendar_week].first.created_at.strftime('%A')
-
-      week[i]
-
-      #binding.pry
-
-      task[calendar_week]
-    end
-
-    #binding.pry
-
-    [monday, tuesday, wednsday, thursday, friday]
-  end
-
-  def sort_by_weeks(tasks)
+  def sort_by_week(tasks, calendar_week, calendar_year)
     monday = {}
     tuesday = {}
     wednsday = {}
@@ -220,39 +152,49 @@ class TasksController < ApplicationController
     friday = {}
 
     tasks.each do |task|
+      year = task.created_at.strftime('%Y')
       week = task.created_at.strftime('%V')
       day = task.created_at.strftime('%u')
-      case day
-        when '1'
-          if monday[week].nil?
-            monday[week] = [task]
-          else
-            monday[week] << task
+
+      if year != calendar_year
+        next
+      else
+        if week != calendar_week
+          next
+        else
+          case day
+            when '1'
+              if monday[week].nil?
+                monday[week] = [task]
+              else
+                monday[week] << task
+              end
+            when '2'
+              if tuesday[week].nil?
+                tuesday[week] = [task]
+              else
+                tuesday[week] << task
+              end
+            when '3'
+              if wednsday[week].nil?
+                wednsday[week] = [task]
+              else
+                wednsday[week] << task
+              end
+            when '4'
+              if thursday[week].nil?
+                thursday[week] = [task]
+              else
+                thursday[week] << task
+              end
+            when '5'
+              if friday[week].nil?
+                friday[week] = [task]
+              else
+                friday[week] << task
+              end
           end
-        when '2'
-          if tuesday[week].nil?
-            tuesday[week] = [task]
-          else
-            tuesday[week] << task
-          end
-        when '3'
-          if wednsday[week].nil?
-            wednsday[week] = [task]
-          else
-            wednsday[week] << task
-          end
-        when '4'
-          if thursday[week].nil?
-            thursday[week] = [task]
-          else
-            thursday[week] << task
-          end
-        when '5'
-          if friday[week].nil?
-            friday[week] = [task]
-          else
-            friday[week] << task
-          end
+        end
       end
     end
 
