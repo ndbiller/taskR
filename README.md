@@ -95,3 +95,9 @@ deploy changes from branch to heroku (**bad practice!**):
 git push heroku branchname:master  
 ```
 
+deploy migrations on heroku:  
+
+```
+heroku run rake db:migrate --app task-r  
+```
+
