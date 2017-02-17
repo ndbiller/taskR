@@ -63,7 +63,7 @@ ALTER ROLE nd WITH CREATEROLE;
 ALTER ROLE nd WITH CREATEDB;  
 ```
 
-change database owner to new user:
+change database owner to new user:  
 
 ```sql
 ALTER DATABASE db_name OWNER TO new_owner;  
@@ -106,4 +106,3 @@ deploy migrations on heroku:
 ```
 heroku run rake db:migrate --app task-r  
 ```
-

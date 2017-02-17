@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <div class="default-values hidden">
+  <div class="default-values ">
     <p><strong>hidden fields:</strong></p>
     <div class="field">
       <%= f.label :user_id, 'user id' %><br>
@@ -21,10 +21,10 @@
       <%= f.label :active, 'status' %><br>
       <%= f.check_box :active, class: 'form-control', checked: @task.active? %>
     </div>
-    <!--<div class="field date-time-row">
+    <div class="field date-time-row">
       <%= f.label :created_at, 'created at' %><br>
       <%= f.datetime_select :created_at, class: 'form-control', value: @task.created_at, type: 'datetime-local' %>
-    </div>-->
+    </div>
     <div class="field date-time-row">
       <%= f.label :started_at, 'started at' %><br>
       <%= f.datetime_select :started_at, class: 'form-control', value: @task.started_at, type: 'datetime-local' %>
