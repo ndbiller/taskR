@@ -85,7 +85,7 @@ PGUSER=`echo $TASKR_DATABASE_USERNAME` PGPASSWORD=`echo $TASKR_DATABASE_PASSWORD
 (enter your heroku credentials: email and password)  
 ```
 
-(note: you can push from local to production with the same command, just change pull to push)  
+(note: i think you can push from local to production with the same command, just change pull to push)  
 
 ## publish changes to production environment on heroku
 
