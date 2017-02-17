@@ -57,16 +57,22 @@ psql
 
 create user with password and alter roles:  
 
-```mysql  
-CREATE USER nd WITH PASSWORD '`echo $TASKR_DATABASE_USERNAME`';  
+```sql
+CREATE USER nd WITH PASSWORD 'db_password';  
 ALTER ROLE nd WITH CREATEROLE;  
 ALTER ROLE nd WITH CREATEDB;  
 ```
 
+change database owner to new user:
+
+```sql
+ALTER DATABASE db_name OWNER TO new_owner;  
+```
+
 if it exists, drop the local database before pulling from heroku:  
 
-```mysql  
-DROP DATABASE "taskR_development"  
+```sql
+DROP DATABASE "taskR_development";  
 \q  
 exit  
 ```
