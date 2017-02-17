@@ -7,11 +7,37 @@
     <%= f.label :email %>
     <%= f.email_field :email, class: 'form-control' %>
 
-    <%= f.label :department %>
-    <%= f.text_field :department, class: 'form-control' %>
+    <% #binding.pry %>
+
+    <div class="row">
+
+      <div class="col-sm-4">
+        <%= f.label :department %>
+        <%= f.text_field :department, class: 'form-control' %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.label :add_department %>
+        <%= f.button :add_department, class: 'form-control' %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= f.label :categories %>
+        <% @user.categories.each_with_index do |cat, i| %>
+            <input value="<%= cat %>" name="user[categories[<%= i %>]]" id="user_categories<%= i %>" type="text">
+        <% end %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.label :add_categorie %>
+        <%= f.button :add_categorie, class: 'form-control btn-success' %>
+      </div>
+
+    </div>
 
     <%= f.label :start_of_training %>
     <%= f.date_select :start_of_training, order: [:day, :month, :year], class: 'form-control' %>
+
+    <%= f.label :advanced %>
+    <%= f.check_box :advanced, class: "form-control" %>
 
     <%= f.label :password %>
     <%= f.password_field :password, class: 'form-control' %>

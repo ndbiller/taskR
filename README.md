@@ -101,3 +101,16 @@ deploy migrations on heroku:
 heroku run rake db:migrate --app task-r  
 ```
 
+## expand your models
+
+```
+rails generate migration AddColumnNameToPost column_name:string  
+```
+
+then run  
+
+```
+bundle exec rake db:migrate  
+```
+
+now add validations to model, make it interactable in the views form, add it to the allowed parameters in the controller and you can use it.  
