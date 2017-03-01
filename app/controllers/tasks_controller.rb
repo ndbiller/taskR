@@ -8,6 +8,13 @@ class TasksController < ApplicationController
   def index
     tasks = Task.where(user_id: session[:user_id])
     @tasks = tasks.sort_by(&:created_at)
+
+    #binding.pry
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data as_csv(@tasks), filename: "tasks-#{Date.today}.csv" }
+    end
   end
 
   # shows all the tasks of all users
@@ -109,6 +116,21 @@ class TasksController < ApplicationController
   end
 
   private
+
+  def as_csv(tasks)
+    attributes = %w{id name user_id created_at started_at stopped_at updated_at category duration}
+
+    #attributes = %w{id email name}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      tasks.each do |task|
+        #binding.pry
+        csv << attributes.collect{ |attr| task.send(attr) }
+      end
+    end
+  end
 
   def find_starting_day(week, calendar_week)
     starting_day = 0
