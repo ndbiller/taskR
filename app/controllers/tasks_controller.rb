@@ -169,6 +169,7 @@ class TasksController < ApplicationController
     wednsday = {}
     thursday = {}
     friday = {}
+    saturday = {}
 
     tasks.each do |task|
       year = task.created_at.strftime('%Y')
@@ -212,12 +213,18 @@ class TasksController < ApplicationController
               else
                 friday[week] << task
               end
+            when '6'
+              if saturday[week].nil?
+                saturday[week] = [task]
+              else
+                saturday[week] << task
+              end
           end
         end
       end
     end
 
-    [monday, tuesday, wednsday, thursday, friday]
+    [monday, tuesday, wednsday, thursday, friday, saturday]
   end
 
   # Use callbacks to share common setup or constraints between actions.
