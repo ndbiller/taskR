@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   # GET /tasks.json
   def index
     tasks = Task.where(user_id: session[:user_id])
-    @tasks = tasks.sort_by(&:created_at)
+    @tasks = tasks.sort_by(&:created_at).reverse
 
     #binding.pry
 
