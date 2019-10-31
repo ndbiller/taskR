@@ -6,7 +6,7 @@ ruby '2.2.5'
 gem 'rails', '4.2.6'
 
 # Bootstrap
-gem 'bootstrap-sass', '3.3.6'
+gem 'bootstrap-sass', '3.4.1'
 
 # Use for password_digest
 gem 'bcrypt', '3.1.11'
