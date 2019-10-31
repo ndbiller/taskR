@@ -76,7 +76,7 @@ group :development, :test do
   gem 'minitest-rails'
 
   # code cleanup
-  gem 'rubocop', '~> 0.39.0'
+  gem 'rubocop', '~> 0.68.1'
 
   # debugging
   gem 'pry-rails'
