@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/svenfuchs/rails-i18n.git
+  remote: https://github.com/svenfuchs/rails-i18n.git
   revision: f8c83ec753439d7286b9168bbb246e354866cb9e
   branch: rails-4-x
   specs:
@@ -120,6 +120,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nio4r (2.3.1)
     nokogiri (1.9.1)
       mini_portile2 (~> 2.4.0)
     oauth2 (1.2.0)
@@ -150,7 +151,8 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-    puma (3.6.0)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     rack (1.6.11)
     rack-test (0.6.3)
       rack (>= 1.0)
